@@ -1,4 +1,15 @@
 {
+    "invalid_jwt_token": "Invalid or expired JWT token",
+    "invalid_ws_auth_format": "Invalid WebSocket protocol authentication format",
+    "missing_ws_auth_protocol": "Missing WebSocket protocol for authentication",
+    "missing_or_invalid_key": "Missing or invalid {{.key}}",
+    "access_denied": "Access denied",
+    "get_userinfo_failed": "Failed to get user information",
+    "session_expired": "Session expired",
+    "missing_or_malformed_jwt": "Missing or malformed JWT token",
+    "method_not_allow": "HTTP method not allowed for the requested endpoint",
+    "not_found": "Resource not found. Verify the URL or endpoint",
+    "internal_server_error": "Internal server error. Please check logs for more details",
 
     "required" : "{{.field}} is required",
     "email": "{{.field}} must be a valid email",

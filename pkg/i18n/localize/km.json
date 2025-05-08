@@ -1,4 +1,16 @@
 {
+    "invalid_jwt_token": "ឯកសារអាជ្ញាបណ្ណ JWT មិនត្រឹមត្រូវ ឬ ផុតកំណត់",
+    "invalid_ws_auth_format": "ទ្រង់ទ្រាយផ្ទៀងផ្ទាត់ WebSocket មិនត្រឹមត្រូវ",
+    "missing_ws_auth_protocol": "បាត់ព្រឹត្តិបត្រសម្រាប់ផ្ទៀងផ្ទាត់ WebSocket",
+    "missing_or_invalid_key": "បាត់ ឬ {{.key}} មិនត្រឹមត្រូវ",
+    "access_denied": "មិនអនុញ្ញាតឱ្យចូល",
+    "get_userinfo_failed": "មិនអាចទាញយកព័ត៌មានអ្នកប្រើបានទេ",
+    "session_expired": "សម័យបានផុតកំណត់",
+    "missing_or_malformed_jwt": "គ្មាន ឬ JWT token មិនត្រឹមត្រូវ",
+    "method_not_allow": "មិនអនុញ្ញាតឲ្យប្រើវិធីសាស្ត្រ HTTP សម្រាប់ endpoint ដែលបានស្នើសុំ",
+    "not_found": "រកមិនឃើញធនធានទេ សូមពិនិត្យ URL ឬ endpoint ម្តងទៀត",
+    "internal_server_error": "បញ្ហា server ខាងក្នុង សូមពិនិត្យ log សម្រាប់ព័ត៌មានបន្ថែម",
+
     "required": "{{.field}} គឺត្រូវតែបញ្ចូល",
     "email": "{{.field}} ត្រូវតែជាអ៊ីមែលត្រឹមត្រូវ",
     "min": "{{.field}} ត្រូវតែមានយ៉ាងហោចណាស់ {{.number}} តួអក្សរ",

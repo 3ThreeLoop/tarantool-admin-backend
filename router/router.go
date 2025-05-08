@@ -1,6 +1,8 @@
 package router
 
 import (
+	"api-mini-shop/pkg/utls"
+
 	"github.com/gofiber/contrib/fiberi18n/v2"
 	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
@@ -12,6 +14,7 @@ import (
 func New() *fiber.App {
 	f := fiber.New(fiber.Config{
 		// EnablePrintRoutes: true,
+		ErrorHandler: utls.GlobalErrorHandler,
 	})
 	f.Use(logger.New())
 	f.Use("/ws", func(c *fiber.Ctx) error {

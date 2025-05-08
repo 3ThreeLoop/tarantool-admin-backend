@@ -9,17 +9,15 @@ import (
 	_ "github.com/tarantool/go-tarantool/v2/uuid"
 )
 
-type PlayerContext struct {
-	Id           float64
-	PlayerUuid   string
+type UserContext struct {
+	Id           int
+	UserUuid     string
 	UserName     string
 	LoginSession string
 	Exp          time.Time
 	UserAgent    string
 	Ip           string
-	MembershipId float64
-	StatusId     float64
-	TokenVersion float64
+	StatusId     int
 }
 type Paging struct {
 	Page    int `json:"page" query:"page" validate:"required,min=1"`
@@ -31,6 +29,7 @@ type Sort struct {
 }
 type Filter struct {
 	Property string      `json:"property" validate:"required"`
+	Operator string      `json:"operator" validate:"required"`
 	Value    interface{} `json:"value" validate:"required"`
 }
 

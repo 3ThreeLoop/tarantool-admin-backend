@@ -40,3 +40,10 @@ type Auth struct {
 type User struct {
 	UserUUID uuid.UUID `json:"user_uuid" db:"user_uuid"`
 }
+type UserInfo struct {
+	ID           int    `json:"id" db:"id"`
+	UserUUID     string `json:"user_uuid" db:"user_uuid"`
+	UserName     string `json:"user_name" db:"user_name"`
+	LoginSession string `json:"login_session" db:"login_session"`
+	StatusID     int    `json:"status_id" db:"status_id"`
+}

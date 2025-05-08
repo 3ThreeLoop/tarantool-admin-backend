@@ -106,3 +106,25 @@ func (au *AuthRepoImpl) Login(username string, password string) (*LoginReponse, 
 		},
 	}, nil
 }
+
+func (au *AuthRepoImpl) GetUserByUUID(user_uuid string) (*UserInfo, error) {
+	var user_info UserInfo
+
+	// prepare sql
+	sql := `
+		SELECT
+			id, user_uuid, user_name,
+			login_session, status_id
+		FROM tbl_users
+		WHERE deleted_at IS NULL 
+		AND user_uuid = $1
+	`
+
+	// execute request
+	if err := au.DBPool.Get(&user_info, sql, user_uuid); err != nil {
+		custom_log.NewCustomLog("get_userinfo_failed", err.Error(), "error")
+		return nil, err
+	}
+
+	return &user_info, nil
+}

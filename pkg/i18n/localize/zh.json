@@ -1,0 +1,15 @@
+{
+    "required": "{{.field}} 为必填项",
+    "email": "{{.field}} 必须是有效的邮箱地址",
+    "min": "{{.field}} 至少需要 {{.number}} 个字符",
+    "max": "{{.field}} 最多不能超过 {{.number}} 个字符",
+    "invalid": "{{.field}} 无效",
+    "invalid_body": "请求体无效",
+
+    "login_failed": "登录失败",
+    "login_success": "登录成功",
+    "username_or_password_invalid": "用户名或密码无效",
+    "error_database": "数据库错误",
+    "error_create_token": "创建令牌失败"
+}
+

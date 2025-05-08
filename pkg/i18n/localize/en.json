@@ -1,0 +1,15 @@
+{
+
+    "required" : "{{.field}} is required",
+    "email": "{{.field}} must be a valid email",
+    "min": "{{.field}} must be at least {{.number}} characters",
+    "max": "{{.field}} must be at most {{.number}} characters",
+    "invalid": "{{.field}} is invalid",
+    "invalid_body": "Invalid request body",
+
+    "login_failed": "Login failed",
+    "login_success": "Login successful",
+    "username_or_password_invalid": "Invalid username or password",
+    "error_database": "Database error",
+    "error_create_token": "Failed to create token"
+}

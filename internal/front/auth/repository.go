@@ -1,0 +1,108 @@
+package auth
+
+import (
+	custom_log "api-mini-shop/pkg/logs"
+	"api-mini-shop/pkg/responses"
+	"api-mini-shop/pkg/utls"
+	"fmt"
+	"log"
+	"os"
+	"time"
+
+	"github.com/golang-jwt/jwt"
+	"github.com/google/uuid"
+	"github.com/jmoiron/sqlx"
+	"github.com/joho/godotenv"
+)
+
+type AuthRepo interface {
+	Login(username string, password string) (*LoginReponse, *responses.ErrorResponse)
+}
+
+type AuthRepoImpl struct {
+	DBPool *sqlx.DB
+}
+
+func NewAuthRepoImpl(db_pool *sqlx.DB) *AuthRepoImpl {
+	return &AuthRepoImpl{
+		DBPool: db_pool,
+	}
+}
+
+func (au *AuthRepoImpl) Login(username string, password string) (*LoginReponse, *responses.ErrorResponse) {
+	var users []User
+
+	// prepare sql
+	sql := `
+		SELECT
+			user_uuid
+		FROM tbl_users
+		WHERE deleted_at IS NULL 
+		AND user_name = $1 
+		AND password = $2
+	`
+
+	// execute request
+	if err := au.DBPool.Select(&users, sql, username, password); err != nil {
+		custom_log.NewCustomLog("login_failed", err.Error(), "error")
+		err_msg := &responses.ErrorResponse{}
+		return nil, err_msg.NewErrorResponse("login_failed", fmt.Errorf("username_or_password_invalid"))
+	}
+
+	if len(users) == 0 {
+		custom_log.NewCustomLog("login_failed", "no_user_found", "error")
+		err_msg := &responses.ErrorResponse{}
+		return nil, err_msg.NewErrorResponse("login_failed", fmt.Errorf("username_or_password_invalid"))
+	}
+
+	user := users[0]
+
+	hours := utls.GetenvInt("JWT_EXP_HOUR", 7)
+	expirationTime := time.Now().Add(time.Duration(hours) * time.Hour)
+
+	// create the JWT claims
+	login_session, _ := uuid.NewV7()
+	claims := jwt.MapClaims{
+		"user_uuid":     user.UserUUID,
+		"login_session": login_session.String(),
+		"exp":           expirationTime.Unix(),
+	}
+
+	errs := godotenv.Load()
+	if errs != nil {
+		log.Fatalf("Error loading .env file")
+	}
+	secret_key := os.Getenv("JWT_SECRET_KEY")
+
+	// prepare sql
+	update_sql := `
+		UPDATE tbl_users SET
+			login_session = $1
+		WHERE deleted_at IS NULL
+		AND user_uuid = $2 
+	`
+
+	// execute request
+	_, err := au.DBPool.Exec(update_sql, login_session, user.UserUUID)
+	if err != nil {
+		custom_log.NewCustomLog("login_failed", err.Error(), "error")
+		err_msg := &responses.ErrorResponse{}
+		return nil, err_msg.NewErrorResponse("login_failed", fmt.Errorf("error_database"))
+	}
+
+	// Create the token
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString([]byte(secret_key))
+	if err != nil {
+		custom_log.NewCustomLog("login_failed", err.Error(), "error")
+		err_msg := &responses.ErrorResponse{}
+		return nil, err_msg.NewErrorResponse("login_failed", fmt.Errorf("error_create_token"))
+	}
+
+	return &LoginReponse{
+		Auth: Auth{
+			Token:     tokenString,
+			TokenType: "JWT",
+		},
+	}, nil
+}

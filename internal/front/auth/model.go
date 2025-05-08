@@ -1,0 +1,42 @@
+package auth
+
+import (
+	custom_log "api-mini-shop/pkg/logs"
+	"api-mini-shop/pkg/utls"
+	"fmt"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
+)
+
+type LoginRequest struct {
+	UserName string `json:"user_name" validate:"required"`
+	Password string `json:"password" validate:"required"`
+}
+
+func (au *LoginRequest) Bind(c *fiber.Ctx, v *utls.Validator) error {
+	if err := c.BodyParser(au); err != nil {
+		custom_log.NewCustomLog("login_failed", err.Error(), "error")
+		return fmt.Errorf(utls.Translate("invalid_body", nil, c))
+	}
+
+	if err := v.Validate(au, c); err != nil {
+		custom_log.NewCustomLog("login_failed", err.Error(), "error")
+		return err
+	}
+
+	return nil
+}
+
+type LoginReponse struct {
+	Auth Auth `json:"auth"`
+}
+
+type Auth struct {
+	Token     string `json:"token"`
+	TokenType string `json:"token_type"`
+}
+
+type User struct {
+	UserUUID uuid.UUID `json:"user_uuid" db:"user_uuid"`
+}

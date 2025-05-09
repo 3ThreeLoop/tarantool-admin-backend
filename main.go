@@ -10,6 +10,12 @@ import (
 	"fmt"
 )
 
+// @title       Mini Shop API
+// @version     1.0.0
+// @description Professional API documentation for the Mini Shop backend
+// @BasePath    /api/v1
+
+// @schemes     http
 func main() {
 	// load environment variable from .env file
 	app_configs := config.NewAppConfig()
@@ -28,7 +34,7 @@ func main() {
 	apps := router.New()
 
 	// swagger
-	swagger.NewSwagger(apps, app_configs.AppHost, app_configs.AppPort)
+	swagger.Setup(apps, app_configs.AppHost, app_configs.AppPort)
 
 	// init router
 	handler.NewServiceHandlers(apps, pool)

@@ -22,6 +22,16 @@ func NewAuthHandler(db_pool *sqlx.DB) *AuthHandler {
 	}
 }
 
+// @Summary      Login
+// @Description  Authenticates a user and returns a token
+// @Tags         Admin/Auth
+// @Accept       json
+// @Produce      json
+// @Param        user  body      auth.LoginRequest  true  "Credentials to use"
+// @Success      200   {object}  auth.LoginResponse
+// @Failure      400   {object}  utls.Error
+// @Failure      401   {object}  utls.Error
+// @Router       /front/auth [post]
 func (au *AuthHandler) Login(c *fiber.Ctx) error {
 	var login_request LoginRequest
 	v := utls.NewValidator()

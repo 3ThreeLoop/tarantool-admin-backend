@@ -28,7 +28,7 @@ func (au *LoginRequest) Bind(c *fiber.Ctx, v *utls.Validator) error {
 	return nil
 }
 
-type LoginReponse struct {
+type LoginResponse struct {
 	Auth Auth `json:"auth"`
 }
 

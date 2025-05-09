@@ -16,7 +16,7 @@ import (
 )
 
 type AuthRepo interface {
-	Login(username string, password string) (*LoginReponse, *responses.ErrorResponse)
+	Login(username string, password string) (*LoginResponse, *responses.ErrorResponse)
 }
 
 type AuthRepoImpl struct {
@@ -29,7 +29,7 @@ func NewAuthRepoImpl(db_pool *sqlx.DB) *AuthRepoImpl {
 	}
 }
 
-func (au *AuthRepoImpl) Login(username string, password string) (*LoginReponse, *responses.ErrorResponse) {
+func (au *AuthRepoImpl) Login(username string, password string) (*LoginResponse, *responses.ErrorResponse) {
 	var users []User
 
 	// prepare sql
@@ -99,7 +99,7 @@ func (au *AuthRepoImpl) Login(username string, password string) (*LoginReponse, 
 		return nil, err_msg.NewErrorResponse("login_failed", fmt.Errorf("error_create_token"))
 	}
 
-	return &LoginReponse{
+	return &LoginResponse{
 		Auth: Auth{
 			Token:     tokenString,
 			TokenType: "JWT",

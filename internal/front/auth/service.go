@@ -7,7 +7,7 @@ import (
 )
 
 type AuthServiceCreator interface {
-	Login(username string, password string) (*LoginReponse, *responses.ErrorResponse)
+	Login(username string, password string) (*LoginResponse, *responses.ErrorResponse)
 }
 
 type AuthService struct {
@@ -22,6 +22,6 @@ func NewAuthService(db_pool *sqlx.DB) *AuthService {
 	}
 }
 
-func (au *AuthService) Login(username string, password string) (*LoginReponse, *responses.ErrorResponse) {
+func (au *AuthService) Login(username string, password string) (*LoginResponse, *responses.ErrorResponse) {
 	return au.AuthRepo.Login(username, password)
 }

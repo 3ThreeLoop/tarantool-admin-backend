@@ -1,4 +1,4 @@
-package config
+package configs
 
 import (
 	"api-mini-shop/pkg/utls"

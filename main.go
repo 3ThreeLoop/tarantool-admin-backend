@@ -1,10 +1,11 @@
 package main
 
 import (
-	"api-mini-shop/config"
+	"api-mini-shop/configs"
 	"api-mini-shop/db/postgresql"
 	"api-mini-shop/handler"
 	"api-mini-shop/pkg/logs"
+	"api-mini-shop/pkg/redis"
 	"api-mini-shop/pkg/swagger"
 	"api-mini-shop/router"
 	"fmt"
@@ -18,7 +19,7 @@ import (
 // @schemes     http
 func main() {
 	// load environment variable from .env file
-	app_configs := config.NewAppConfig()
+	app_configs := configs.NewAppConfig()
 
 	// log
 	log_level := "info"
@@ -29,6 +30,9 @@ func main() {
 	if err != nil {
 		fmt.Println("Error connect database : ", err)
 	}
+
+	// init redis
+	_ = redis.NewRedis()
 
 	// init go fiber framework, cors and handler configuration
 	apps := router.New()

@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"api-mini-shop/pkg/utls"
+	"api-mini-shop/pkg/utils"
 	"log"
 	"os"
 
@@ -20,7 +20,7 @@ func NewAppConfig() *AppConfig {
 	}
 
 	host := os.Getenv("API_HOST")
-	port := utls.GetenvInt("API_PORT", 8585)
+	port := utils.GetenvInt("API_PORT", 8585)
 	return &AppConfig{
 		AppHost: host,
 		AppPort: port,

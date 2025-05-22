@@ -1,23 +1,37 @@
-MIGRATE=migrate
-MIGRATIONS_DIR=./db/postgresql/migrations
-DB_URL=postgres://postgres:122002@172.31.10.86:5432/db_mini_shop
+# Makefile for goose v3
+.PHONY: db up down redo version force create
 
+export DATABASE_URL=$(shell grep ^DATABASE_URL= .env | cut -d '=' -f2- | tr -d '"')
+export MIGRATIONS_DIR=./db/postgresql/migrations
+
+# Create migration: make db name=create_users
+db:
+	@echo "Creating migration: $(name)"
+	goose create $(name) sql -dir $(MIGRATIONS_DIR)
+
+# Run all up migrations
 up:
-	$(MIGRATE) -path $(MIGRATIONS_DIR) -database "$(DB_URL)" up
+	goose -dir $(MIGRATIONS_DIR) postgres "$(DATABASE_URL)" up
 
+# Rollback one step
 down:
-	$(MIGRATE) -path $(MIGRATIONS_DIR) -database "$(DB_URL)" down 1
+	goose -dir $(MIGRATIONS_DIR) postgres "$(DATABASE_URL)" down 1
 
+# Redo last migration
 redo:
-	$(MIGRATE) -path $(MIGRATIONS_DIR) -database "$(DB_URL)" down 1
-	$(MIGRATE) -path $(MIGRATIONS_DIR) -database "$(DB_URL)" up
+	goose -dir $(MIGRATIONS_DIR) postgres "$(DATABASE_URL)" down 1
+	goose -dir $(MIGRATIONS_DIR) postgres "$(DATABASE_URL)" up
 
+# Show current DB version
 version:
-	$(MIGRATE) -path $(MIGRATIONS_DIR) -database "$(DB_URL)" version
+	goose -dir $(MIGRATIONS_DIR) postgres "$(DATABASE_URL)" version
 
+# Force migration version (interactive)
 force:
-	$(MIGRATE) -path $(MIGRATIONS_DIR) -database "$(DB_URL)" force
+	@read -p "Enter version to force to: " v; \
+	goose -dir $(MIGRATIONS_DIR) postgres "$(DATABASE_URL)" force $$v
 
+# Interactive migration creation
 create:
 	@read -p "Migration name: " name; \
-	$(MIGRATE) create -ext sql -dir $(MIGRATIONS_DIR) $$name
+	goose create $$name sql -dir $(MIGRATIONS_DIR)

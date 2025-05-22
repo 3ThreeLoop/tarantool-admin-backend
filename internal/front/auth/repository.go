@@ -3,7 +3,7 @@ package auth
 import (
 	custom_log "api-mini-shop/pkg/logs"
 	"api-mini-shop/pkg/responses"
-	"api-mini-shop/pkg/utls"
+	utils "api-mini-shop/pkg/utils"
 	"fmt"
 	"log"
 	"os"
@@ -57,7 +57,7 @@ func (au *AuthRepoImpl) Login(username string, password string) (*LoginResponse,
 
 	user := users[0]
 
-	hours := utls.GetenvInt("JWT_EXP_HOUR", 7)
+	hours := utils.GetenvInt("JWT_EXP_HOUR", 7)
 	expirationTime := time.Now().Add(time.Duration(hours) * time.Hour)
 
 	// create the JWT claims
@@ -114,7 +114,7 @@ func (au *AuthRepoImpl) GetUserByUUID(user_uuid string) (*UserInfo, error) {
 	sql := `
 		SELECT
 			id, user_uuid, user_name,
-			login_session, status_id
+			role_id, login_session, status_id
 		FROM tbl_users
 		WHERE deleted_at IS NULL 
 		AND user_uuid = $1

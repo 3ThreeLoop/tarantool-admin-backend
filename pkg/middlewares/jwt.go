@@ -3,7 +3,7 @@ package middlewares
 import (
 	// "api-mini-shop/internal/front/auth"
 	"api-mini-shop/internal/front/auth"
-	types "api-mini-shop/pkg/share"
+	types "api-mini-shop/pkg/model"
 	"api-mini-shop/pkg/utls"
 	"errors"
 	"fmt"

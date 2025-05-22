@@ -2,7 +2,7 @@ package swagger
 
 import (
 	"fmt"
-	"api-mini-shop/docs" 
+	"restful-api/docs" 
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/swagger"

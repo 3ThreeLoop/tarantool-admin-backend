@@ -1,10 +1,10 @@
 package middlewares
 
 import (
-	// "api-mini-shop/internal/front/auth"
-	"api-mini-shop/internal/front/auth"
-	types "api-mini-shop/pkg/share"
-	"api-mini-shop/pkg/utls"
+	// "restful-api/internal/front/auth"
+	"restful-api/internal/front/auth"
+	types "restful-api/pkg/share"
+	"restful-api/pkg/utls"
 	"errors"
 	"fmt"
 	"log"
@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	response "api-mini-shop/pkg/http/response"
+	response "restful-api/pkg/http/response"
 
 	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"

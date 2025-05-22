@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"api-mini-shop/internal/front/auth"
-	"api-mini-shop/pkg/middlewares"
+	"restful-api/internal/front/auth"
+	"restful-api/pkg/middlewares"
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"

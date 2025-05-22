@@ -1,7 +1,7 @@
 package redis
 
 import (
-	"api-mini-shop/configs"
+	"restful-api/configs"
 	"context"
 	"fmt"
 	"log"

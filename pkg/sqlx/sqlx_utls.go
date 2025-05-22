@@ -1,7 +1,7 @@
 package sqlx
 
 import (
-	"api-mini-shop/pkg/share"
+	"restful-api/pkg/share"
 	"fmt"
 	"os"
 	"strings"

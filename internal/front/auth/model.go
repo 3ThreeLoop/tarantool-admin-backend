@@ -1,8 +1,8 @@
 package auth
 
 import (
-	custom_log "api-mini-shop/pkg/logs"
-	"api-mini-shop/pkg/utls"
+	custom_log "restful-api/pkg/logs"
+	"restful-api/pkg/utls"
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"

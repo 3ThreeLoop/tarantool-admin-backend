@@ -1,8 +1,8 @@
 package auth
 
 import (
-	response "api-mini-shop/pkg/http/response"
-	"api-mini-shop/pkg/utls"
+	response "restful-api/pkg/http/response"
+	"restful-api/pkg/utls"
 	"fmt"
 	"net/http"
 

@@ -1,7 +1,7 @@
 package router
 
 import (
-	"api-mini-shop/pkg/utls"
+	"restful-api/pkg/utls"
 
 	"github.com/gofiber/contrib/fiberi18n/v2"
 	"github.com/gofiber/contrib/websocket"

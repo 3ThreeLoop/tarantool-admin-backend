@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"api-mini-shop/pkg/responses"
+	"restful-api/pkg/responses"
 
 	"github.com/jmoiron/sqlx"
 )

@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"api-mini-shop/pkg/utls"
+	"restful-api/pkg/utls"
 	"log"
 	"os"
 

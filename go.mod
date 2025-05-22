@@ -1,4 +1,4 @@
-module api-mini-shop
+module restful-api
 
 go 1.23.0
 

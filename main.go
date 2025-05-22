@@ -1,13 +1,13 @@
 package main
 
 import (
-	"api-mini-shop/configs"
-	"api-mini-shop/db/postgresql"
-	"api-mini-shop/handler"
-	"api-mini-shop/pkg/logs"
-	"api-mini-shop/pkg/redis"
-	"api-mini-shop/pkg/swagger"
-	"api-mini-shop/router"
+	"restful-api/configs"
+	"restful-api/db/postgresql"
+	"restful-api/handler"
+	"restful-api/pkg/logs"
+	"restful-api/pkg/redis"
+	"restful-api/pkg/swagger"
+	"restful-api/router"
 	"fmt"
 )
 

@@ -2,8 +2,8 @@ package handler
 
 import (
 	"api-mini-shop/internal/front/auth"
+	user "api-mini-shop/internal/front/user"
 	"api-mini-shop/pkg/middlewares"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
@@ -17,6 +17,7 @@ type ServiceHandler struct {
 // register modules route here
 type FrontService struct {
 	AuthRoute *auth.AuthRoute
+	UserRoute *user.UserRoute
 }
 
 func NewFrontService(app *fiber.App, pool *sqlx.DB) *FrontService {
@@ -26,13 +27,16 @@ func NewFrontService(app *fiber.App, pool *sqlx.DB) *FrontService {
 	// middleware
 	middlewares.NewJwtMinddleWare(app, pool)
 
-	app.Get("/hello", func(c *fiber.Ctx) error {
-		fmt.Println("hello")
-		return nil
-	})
+	user := user.NewUserRoute(app, pool).RegisterUserRoute()
+
+	// app.Get("/hello", func(c *fiber.Ctx) error {
+	// 	fmt.Println("hello")
+	// 	return nil
+	// })
 
 	return &FrontService{
 		AuthRoute: au,
+		UserRoute: user,
 	}
 }
 

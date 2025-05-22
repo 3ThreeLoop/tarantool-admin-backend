@@ -61,7 +61,7 @@ func (u *UserRepoImpl) Show(userShowRequest UserShowRequest) (*UserResponse, *re
 	sqlOrderBy := postgres.BuildSQLSort(userShowRequest.Sorts)
 
 	sqlFilters, argsFilters := postgres.BuildSQLFilter(userShowRequest.Filters)
-	fmt.Println("🚀 ~ file: repository.go ~ line 67 ~ func ~ sqlFilters : ", sqlFilters)
+	// fmt.Println("🚀 ~ file: repository.go ~ line 67 ~ func ~ sqlFilters : ", sqlFilters)
 	whereClause := "WHERE u.deleted_at IS NULL"
 
 	if sqlFilters != "" {
@@ -98,13 +98,13 @@ func (u *UserRepoImpl) Show(userShowRequest UserShowRequest) (*UserResponse, *re
 		FROM 
 			tbl_users u
 		INNER JOIN 
-			tbl_users_roles ur ON u.role_id = ur.id
+			tbl_roles ur ON u.role_id = ur.id
 		LEFT JOIN 
 			tbl_users creator ON u.created_by = creator.id
 		%s %s %s`, whereClause, sqlOrderBy, sqlLimit)
 
-	fmt.Println("🚀 SQL Query:", query)
-	fmt.Println("🚀 Args:", argsFilters)
+	// fmt.Println("🚀 SQL Query:", query)
+	// fmt.Println("🚀 Args:", argsFilters)
 
 	var users []User
 	err := u.db.Select(&users, query, argsFilters...)
@@ -120,14 +120,14 @@ func (u *UserRepoImpl) Show(userShowRequest UserShowRequest) (*UserResponse, *re
 		FROM tbl_users u
 		%s`, whereClause)
 
-	fmt.Println("🚀 Count Query:", countQuery)
+	// fmt.Println("🚀 Count Query:", countQuery)
 
 	var totalCount int
 	err = u.db.Get(&totalCount, countQuery, argsFilters...)
 	if err != nil {
 		custom_log.NewCustomLog("user_show_failed", err.Error(), "error")
 		errMsg := &responses.ErrorResponse{}
-		return nil, errMsg.NewErrorResponse("user_show_failed", fmt.Errorf("cannot get total count: database error"))
+		return nil, errMsg.NewErrorResponse("user_show_failed", fmt.Errorf("user_show_failed"))
 	}
 
 	return &UserResponse{
@@ -166,7 +166,7 @@ func (u *UserRepoImpl) ShowOne(user_uuid uuid.UUID) (*UserResponse, *responses.E
 		FROM 
 			tbl_users u
 		INNER JOIN 
-			tbl_users_roles ur 
+			tbl_roles ur 
 		ON  
 			u.role_id = ur.id
 		LEFT JOIN 
@@ -176,13 +176,12 @@ func (u *UserRepoImpl) ShowOne(user_uuid uuid.UUID) (*UserResponse, *responses.E
 		WHERE 
 			u.deleted_at IS NULL AND u.user_uuid = $1`
 
-	fmt.Println("🚀 ~ file: repository.go ~ line 195 ~ func ~ hello : ")
 	var users User
 	err := u.db.Get(&users, query, user_uuid)
 	if err != nil {
 		custom_log.NewCustomLog("user_showone_failed", err.Error(), "error")
 		err_msg := &responses.ErrorResponse{}
-		return nil, err_msg.NewErrorResponse("user_showone_failed", fmt.Errorf("cannot select user: database error"))
+		return nil, err_msg.NewErrorResponse("user_showone_failed", fmt.Errorf("user_show_failed"))
 	}
 
 	return &UserResponse{Users: []User{users}, Total: 0}, nil
@@ -196,7 +195,7 @@ func (u *UserRepoImpl) Create(usreq UserNewRequest) (*UserResponse, *responses.E
 	if err != nil {
 		custom_log.NewCustomLog("user_create_failed", err.Error(), "error")
 		err_msg := &responses.ErrorResponse{}
-		return nil, err_msg.NewErrorResponse("user_create_failed", fmt.Errorf("cannot begin transaction"))
+		return nil, err_msg.NewErrorResponse("user_create_failed", fmt.Errorf("user_show_failed"))
 	}
 
 	defer func() {
@@ -226,7 +225,7 @@ func (u *UserRepoImpl) Create(usreq UserNewRequest) (*UserResponse, *responses.E
 	if err != nil {
 		custom_log.NewCustomLog("user_create_failed", err.Error())
 		err_resp := &responses.ErrorResponse{}
-		return nil, err_resp.NewErrorResponse("user_create_failed", err)
+		return nil, err_resp.NewErrorResponse("user_create_failed", fmt.Errorf("user_show_failed"))
 	}
 
 	// Insert query
@@ -485,7 +484,7 @@ func (u *UserRepoImpl) GetStatus() *[]types.Status {
 }
 
 func (u *UserRepoImpl) GetRoles() (*[]Role, error) {
-	query := "SELECT id, user_role_name FROM tbl_users_roles WHERE deleted_at IS NULL"
+	query := "SELECT id, user_role_name FROM tbl_roles WHERE deleted_at IS NULL"
 	var args []interface{}
 
 	if u.userCtx.RoleId == 1 {

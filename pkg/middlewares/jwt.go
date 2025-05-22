@@ -4,7 +4,7 @@ import (
 	// "api-mini-shop/internal/front/auth"
 	"api-mini-shop/internal/front/auth"
 	types "api-mini-shop/pkg/model"
-	"api-mini-shop/pkg/utls"
+	utils "api-mini-shop/pkg/utils"
 	"errors"
 	"fmt"
 	"log"
@@ -38,7 +38,7 @@ func NewJwtMinddleWare(app *fiber.App, DBPool *sqlx.DB) {
 			webSocketProtocol := c.Get("Sec-WebSocket-Protocol")
 			if webSocketProtocol == "" {
 				return c.Status(http.StatusUnauthorized).JSON(fiber.Map{
-					"error": utls.Translate("missing_ws_auth_protocol", nil, c),
+					"error": utils.Translate("missing_ws_auth_protocol", nil, c),
 				})
 			}
 
@@ -46,7 +46,7 @@ func NewJwtMinddleWare(app *fiber.App, DBPool *sqlx.DB) {
 			parts := strings.Split(webSocketProtocol, ",")
 			if len(parts) != 2 || strings.TrimSpace(parts[0]) != "Bearer" {
 				return c.Status(http.StatusUnauthorized).JSON(fiber.Map{
-					"error": utls.Translate("invalid_ws_auth_format", nil, c),
+					"error": utils.Translate("invalid_ws_auth_format", nil, c),
 				})
 			}
 
@@ -59,7 +59,7 @@ func NewJwtMinddleWare(app *fiber.App, DBPool *sqlx.DB) {
 			})
 			if err != nil || !token.Valid {
 				return c.Status(http.StatusUnauthorized).JSON(fiber.Map{
-					"error": utls.Translate("invalid_jwt_token", nil, c),
+					"error": utils.Translate("invalid_jwt_token", nil, c),
 				})
 			}
 			c.Locals("jwt_data", token)
@@ -75,11 +75,11 @@ func NewJwtMinddleWare(app *fiber.App, DBPool *sqlx.DB) {
 			ErrorHandler: func(c *fiber.Ctx, err error) error {
 				if errors.Is(err, jwt.ErrTokenExpired) {
 					return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-						"error": utls.Translate("session_expired", nil, c),
+						"error": utils.Translate("session_expired", nil, c),
 					})
 				}
 				return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-					"error": utls.Translate("missing_or_malformed_jwt", nil, c),
+					"error": utils.Translate("missing_or_malformed_jwt", nil, c),
 				})
 			},
 		})(c)
@@ -109,10 +109,10 @@ func handlePlayerContext(c *fiber.Ctx, pclaim jwt.MapClaims, DBPool *sqlx.DB) er
 	user_uuid, ok := pclaim["user_uuid"].(string)
 	if !ok || user_uuid == "" {
 		return c.Status(http.StatusUnprocessableEntity).JSON(response.NewResponseError(
-			utls.Translate("access_denied", nil, c),
+			utils.Translate("access_denied", nil, c),
 			-500,
 			fmt.Errorf(
-				utls.Translate(
+				utils.Translate(
 					"missing_or_invalid_key",
 					map[string]interface{}{
 						"key": "user_uuid",
@@ -127,10 +127,10 @@ func handlePlayerContext(c *fiber.Ctx, pclaim jwt.MapClaims, DBPool *sqlx.DB) er
 	login_session, ok := pclaim["login_session"].(string)
 	if !ok || login_session == "" {
 		return c.Status(http.StatusUnprocessableEntity).JSON(response.NewResponseError(
-			utls.Translate("access_denied", nil, c),
+			utils.Translate("access_denied", nil, c),
 			-500,
 			fmt.Errorf(
-				utls.Translate(
+				utils.Translate(
 					"missing_or_invalid_key",
 					map[string]interface{}{
 						"key": "login_session",
@@ -145,10 +145,10 @@ func handlePlayerContext(c *fiber.Ctx, pclaim jwt.MapClaims, DBPool *sqlx.DB) er
 	exp, ok := pclaim["exp"].(float64)
 	if !ok {
 		return c.Status(http.StatusUnprocessableEntity).JSON(response.NewResponseError(
-			utls.Translate("access_denied", nil, c),
+			utils.Translate("access_denied", nil, c),
 			-500,
 			fmt.Errorf(
-				utls.Translate(
+				utils.Translate(
 					"missing_or_invalid_key",
 					map[string]interface{}{
 						"key": "exp",
@@ -163,10 +163,10 @@ func handlePlayerContext(c *fiber.Ctx, pclaim jwt.MapClaims, DBPool *sqlx.DB) er
 	user_info, err := auth.NewAuthRepoImpl(DBPool).GetUserByUUID(user_uuid)
 	if err != nil {
 		return c.Status(http.StatusUnprocessableEntity).JSON(response.NewResponseError(
-			utls.Translate("access_denied", nil, c),
+			utils.Translate("access_denied", nil, c),
 			-500,
 			fmt.Errorf(
-				utls.Translate(
+				utils.Translate(
 					"get_userinfo_failed",
 					nil,
 					c,
@@ -178,10 +178,10 @@ func handlePlayerContext(c *fiber.Ctx, pclaim jwt.MapClaims, DBPool *sqlx.DB) er
 	// check login session
 	if login_session != user_info.LoginSession {
 		return c.Status(http.StatusUnprocessableEntity).JSON(response.NewResponseError(
-			utls.Translate("access_denied", nil, c),
+			utils.Translate("access_denied", nil, c),
 			-500,
 			fmt.Errorf(
-				utls.Translate(
+				utils.Translate(
 					"session_expired",
 					nil,
 					c,
@@ -196,6 +196,7 @@ func handlePlayerContext(c *fiber.Ctx, pclaim jwt.MapClaims, DBPool *sqlx.DB) er
 		UserUuid:     user_info.UserUUID,
 		UserName:     user_info.UserName,
 		LoginSession: login_session,
+		RoleId:       uint64(user_info.RoleID),
 		Exp:          time.Unix(int64(exp), 0),
 		UserAgent:    string(c.Context().UserAgent()),
 		Ip:           string(c.Context().RemoteIP().String()),

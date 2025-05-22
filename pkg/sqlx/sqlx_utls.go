@@ -154,7 +154,7 @@ func BuildSort(sorts []share.Sort) (string, []interface{}) {
 
 // built sql paging
 func BuildPaging(page int, perPage int) string {
-	var params []interface{}
+	// var params []interface{}
 
 	if page < 1 {
 		page = 1
@@ -166,7 +166,7 @@ func BuildPaging(page int, perPage int) string {
 	offset := (page - 1) * perPage
 	limit := perPage
 
-	params = append(params, offset, limit)
+	// params = append(params, offset, limit)
 
 	return fmt.Sprintf("LIMIT %d OFFSET %d", limit, offset)
 }

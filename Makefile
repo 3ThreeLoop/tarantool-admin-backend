@@ -2,6 +2,9 @@ MIGRATE=migrate
 MIGRATIONS_DIR=./db/postgresql/migrations
 DB_URL=postgres://postgres:122002@172.31.10.86:5432/db_mini_shop
 
+# example make db name=tbl_hello 
+db:
+	goose -dir $(MIGRATIONS_PATH) create $(name) sql
 up:
 	$(MIGRATE) -path $(MIGRATIONS_DIR) -database "$(DB_URL)" up
 

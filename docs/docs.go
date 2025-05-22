@@ -49,13 +49,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utls.Error"
+                            "$ref": "#/definitions/utils.Error"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/utls.Error"
+                            "$ref": "#/definitions/utils.Error"
                         }
                     }
                 }
@@ -97,7 +97,7 @@ const docTemplate = `{
                 }
             }
         },
-        "utls.Error": {
+        "utils.Error": {
             "type": "object",
             "properties": {
                 "errors": {

@@ -14,10 +14,10 @@ type LoginRequest struct {
 	Password string `json:"password" validate:"required"`
 }
 
-func (au *LoginRequest) Bind(c *fiber.Ctx, v *utls.Validator) error {
+func (au *LoginRequest) Bind(c *fiber.Ctx, v *utils.Validator) error {
 	if err := c.BodyParser(au); err != nil {
 		custom_log.NewCustomLog("login_failed", err.Error(), "error")
-		return fmt.Errorf(utls.Translate("invalid_body", nil, c))
+		return fmt.Errorf(utils.Translate("invalid_body", nil, c))
 	}
 
 	if err := v.Validate(au, c); err != nil {
@@ -44,6 +44,7 @@ type UserInfo struct {
 	ID           int    `json:"id" db:"id"`
 	UserUUID     string `json:"user_uuid" db:"user_uuid"`
 	UserName     string `json:"user_name" db:"user_name"`
+	RoleID       int    `json:"role_id" db:"role_id"`
 	LoginSession string `json:"login_session" db:"login_session"`
 	StatusID     int    `json:"status_id" db:"status_id"`
 }

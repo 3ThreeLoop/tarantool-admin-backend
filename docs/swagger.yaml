@@ -22,7 +22,7 @@ definitions:
       auth:
         $ref: '#/definitions/auth.Auth'
     type: object
-  utls.Error:
+  utils.Error:
     properties:
       errors:
         additionalProperties: true
@@ -56,11 +56,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/utls.Error'
+            $ref: '#/definitions/utils.Error'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/utls.Error'
+            $ref: '#/definitions/utils.Error'
       summary: Login
       tags:
       - Admin/Auth

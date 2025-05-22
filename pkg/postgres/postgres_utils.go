@@ -1,15 +1,18 @@
 package sqlx
 
 import (
-	"restful-api/pkg/share"
+	types "restful-api/pkg/model"
 	"fmt"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/google/uuid"
+	"github.com/jmoiron/sqlx"
 )
 
 // built sql filter
-func BuildSQLFilter(filters []share.Filter) (string, []interface{}) {
+func BuildSQLFilter(filters []types.Filter) (string, []interface{}) {
 	var clauses []string
 	var params []interface{}
 	placeholder := 1
@@ -127,9 +130,8 @@ func BuildSQLFilter(filters []share.Filter) (string, []interface{}) {
 }
 
 // built sql sort
-func BuildSort(sorts []share.Sort) (string, []interface{}) {
+func BuildSQLSort(sorts []types.Sort) string {
 	var orderClauses []string
-	var params []interface{}
 
 	for _, sort := range sorts {
 		field := sort.Property
@@ -145,16 +147,16 @@ func BuildSort(sorts []share.Sort) (string, []interface{}) {
 	}
 
 	if len(orderClauses) == 0 {
-		return "", nil
+		return ""
 	}
 
 	// join the clauses with commas and return the final order by string
-	return "ORDER BY " + strings.Join(orderClauses, ", "), params
+	return "ORDER BY " + strings.Join(orderClauses, ", ")
 }
 
 // built sql paging
 func BuildPaging(page int, perPage int) string {
-	var params []interface{}
+	// var params []interface{}
 
 	if page < 1 {
 		page = 1
@@ -166,7 +168,95 @@ func BuildPaging(page int, perPage int) string {
 	offset := (page - 1) * perPage
 	limit := perPage
 
-	params = append(params, offset, limit)
+	// params = append(params, offset, limit)
 
 	return fmt.Sprintf("LIMIT %d OFFSET %d", limit, offset)
+}
+
+func GetIdByUuid(space_name string, uuid_field_name string, uuid_str string, db *sqlx.Tx) (*int, error) {
+	var id int
+
+	// Parse the UUID
+	uid, err := uuid.Parse(uuid_str)
+	if err != nil {
+		return nil, err
+	}
+
+	// Define the SQL query
+	sql := fmt.Sprintf(`SELECT id FROM %s WHERE %s=$1`, space_name, uuid_field_name)
+
+	// Execute the query
+	err = db.Get(&id, sql, uid)
+	if err != nil {
+		return nil, err
+	}
+
+	return &id, nil
+}
+
+// GetSeqNextVal returns the next value from a sequence
+// SeqResult struct to store sequence result
+type SeqResult struct {
+	ID int `db:"id"`
+}
+
+// Supports both normal DB connection and transactions
+func GetSeqNextVal(seqName string, exec sqlx.Ext) (*int, error) {
+	var result SeqResult
+	sql := `SELECT nextval($1) AS id`
+
+	// Execute query using either DB or transaction
+	err := sqlx.Get(exec, &result, sql, seqName)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get sequence value: %w", err)
+	}
+	return &result.ID, nil
+}
+
+// SetSeqNextVal sets and returns the next sequence value
+func SetSeqNextVal(seq_name string, db *sqlx.Tx) (*int, error) {
+	var id int
+
+	// Define the SQL query - adjust to PostgreSQL sequence operations
+	sql := fmt.Sprintf(`SELECT nextval('%s') as id`, seq_name)
+
+	// Execute the query
+	err := db.Get(&id, sql)
+	if err != nil {
+		return nil, err
+	}
+
+	return &id, nil
+}
+
+// IsExists checks if a record exists with the given field value
+func IsExists(space_name string, field_name string, value interface{}, db *sqlx.Tx) (bool, error) {
+	var exists bool
+
+	// Define the SQL query
+	sql := fmt.Sprintf(`SELECT EXISTS(SELECT 1 FROM %s WHERE %s=$1 AND deleted_at IS NULL)`, space_name, field_name)
+
+	// Execute the query
+	err := db.Get(&exists, sql, value)
+	if err != nil {
+		return false, err
+	}
+
+	return exists, nil
+}
+
+// IsExistsWhere checks if a record exists with custom WHERE conditions
+func IsExistsWhere(space_name string, where_sqlstr string, args []interface{}, db *sqlx.Tx) (bool, error) {
+	var exists bool
+
+	// Define the SQL query
+	sql := fmt.Sprintf(`SELECT EXISTS(SELECT 1 FROM %s WHERE %s AND deleted_at IS NULL)`, space_name, where_sqlstr)
+
+	// Execute the query
+	err := db.Get(&exists, sql, args...)
+	if err != nil {
+		return false, err
+	}
+
+	return exists, nil
 }

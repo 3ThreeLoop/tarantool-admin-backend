@@ -10,18 +10,25 @@
     "method_not_allow": "请求的端点不支持该 HTTP 方法",
     "not_found": "资源未找到，请检查 URL 或接口地址",
     "internal_server_error": "服务器内部错误，请查看日志以获取详细信息",
-
     "required": "{{.field}} 为必填项",
     "email": "{{.field}} 必须是有效的邮箱地址",
     "min": "{{.field}} 至少需要 {{.number}} 个字符",
     "max": "{{.field}} 最多不能超过 {{.number}} 个字符",
     "invalid": "{{.field}} 无效",
     "invalid_body": "请求体无效",
-
     "login_failed": "登录失败",
-    "login_success": "登录成功",
     "username_or_password_invalid": "用户名或密码无效",
     "error_database": "数据库错误",
-    "error_create_token": "创建令牌失败"
+    "error_create_token": "创建令牌失败",
+    "login_invalid": "Invalid login credentials.",
+    "login_success": "Login successful.",
+    "member_info_id": "Member information ID.",
+    "uuid_generate_failed": "Failed to generate UUID.",
+    "session_update_failed": "Failed to update session.",
+    "jwt_failed": "JWT processing failed.",
+    "invalid_session_id": "Invalid session ID.",
+    "login_session_invalid": "Login session is invalid.",
+    "role_id_missing": "令牌中缺少角色ID。",
+    "user_show_failed": "获取用户信息失败。",
+    "user_update_success": "用户信息更新成功。"
 }
-

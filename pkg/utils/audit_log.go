@@ -6,27 +6,32 @@ import (
 	"time"
 
 	custom_log "api-mini-shop/pkg/logs"
-	sql "api-mini-shop/pkg/postgres"
+	postgres "api-mini-shop/pkg/postgres"
 
+	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 )
 
-func AddUserAuditLog(userID int, auditContext string, auditDesc string, auditTypeID int, userAgent string, userName string, ip string, createdBy int, dbPool *sqlx.DB) (*bool, error) {
-	// Get next sequence value
+func AddUserAuditLog(
+	userID int,
+	auditContext string,
+	auditDesc string,
+	auditTypeID int,
+	userAgent string,
+	userName string,
+	ip string,
+	createdBy int,
+	dbPool *sqlx.DB,
+) (*bool, error) {
+
+	// 1. Get next sequence value
 	seqName := "tbl_users_audits_id_seq"
-	seqVal, err := sql.GetSeqNextVal(seqName, dbPool)
+	seqVal, err := postgres.GetSeqNextVal(seqName, dbPool)
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch next sequence value: %w", err)
 	}
 
-	// Build insert query
-	query := `INSERT INTO tbl_users_audits (
-		id, user_id, audit_context, audit_desc, audit_type_id, user_agent, operator, ip, status_id, "order", created_by, created_at
-	) VALUES (
-		$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
-	)`
-
-	// Get local time
+	// 2. Load timezone
 	appTimezone := os.Getenv("APP_TIMEZONE")
 	location, err := time.LoadLocation(appTimezone)
 	if err != nil {
@@ -34,10 +39,24 @@ func AddUserAuditLog(userID int, auditContext string, auditDesc string, auditTyp
 	}
 	localNow := time.Now().In(location)
 
-	// Execute insert
+	// 3. Generate UUID
+	auditUUID := uuid.New().String()
+
+	// 4. Build and execute insert query
+	query := `INSERT INTO tbl_users_audits (
+		id, user_audit_uuid, user_id, user_audit_context, user_audit_desc,
+		audit_type_id, user_agent, operator, ip, status_id,
+		"order", created_by, created_at
+	) VALUES (
+		$1, $2, $3, $4, $5,
+		$6, $7, $8, $9, $10,
+		$11, $12, $13
+	)`
+
 	_, err = dbPool.Exec(
 		query,
 		*seqVal,
+		auditUUID,
 		userID,
 		auditContext,
 		auditDesc,
@@ -45,8 +64,8 @@ func AddUserAuditLog(userID int, auditContext string, auditDesc string, auditTyp
 		userAgent,
 		userName,
 		ip,
-		1,
-		*seqVal,
+		1,       // status_id
+		*seqVal, // order same as ID for now
 		createdBy,
 		localNow,
 	)

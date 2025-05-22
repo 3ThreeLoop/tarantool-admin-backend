@@ -107,7 +107,7 @@ func (r *UserNewRequest) bind(c *fiber.Ctx, v *utils.Validator) error {
 	r.Email = strings.TrimSpace(r.Email)
 	r.UserName = strings.TrimSpace(r.UserName)
 
-	if err := v.Validate(r); err != nil {
+	if err := v.Validate(r, c); err != nil {
 		return err
 	}
 
@@ -205,7 +205,7 @@ func (r *UserUpdateRequest) bind(c *fiber.Ctx, v *utils.Validator) error {
 	r.LastName = strings.TrimSpace(r.LastName)
 	r.Email = strings.TrimSpace(r.Email)
 
-	if err := v.Validate(r); err != nil {
+	if err := v.Validate(r, c); err != nil {
 		return err
 	}
 
@@ -329,7 +329,7 @@ func (r *UserShowRequest) bind(c *fiber.Ctx, v *utils.Validator) error {
 		}
 	}
 
-	if err := v.Validate(r); err != nil {
+	if err := v.Validate(r, c); err != nil {
 		return err
 	}
 	return nil
@@ -404,7 +404,7 @@ func (r *UserUpdatePasswordRequest) bind(c *fiber.Ctx, v *utils.Validator) error
 	r.PasswordConfirm = strings.TrimSpace(r.PasswordConfirm)
 
 	// Validate the struct fields
-	if err := v.Validate(r); err != nil {
+	if err := v.Validate(r, c); err != nil {
 		return err
 	}
 

@@ -4,7 +4,7 @@ import (
 	"api-mini-shop/pkg/constants"
 	custom_log "api-mini-shop/pkg/logs"
 	types "api-mini-shop/pkg/model"
-	"api-mini-shop/pkg/utils"
+	utils "api-mini-shop/pkg/utils"
 	"fmt"
 	"net/http"
 

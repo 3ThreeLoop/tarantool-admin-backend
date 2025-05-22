@@ -3,8 +3,8 @@ package middlewares
 import (
 	// "restful-api/internal/front/auth"
 	"restful-api/internal/front/auth"
-	types "restful-api/pkg/share"
-	"restful-api/pkg/utls"
+	types "restful-api/pkg/model"
+	"restful-api/pkg/utils"
 	"errors"
 	"fmt"
 	"log"

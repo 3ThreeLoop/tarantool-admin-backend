@@ -2,7 +2,7 @@ package auth
 
 import (
 	response "restful-api/pkg/http/response"
-	"restful-api/pkg/utls"
+	"restful-api/pkg/utils"
 	"fmt"
 	"net/http"
 

@@ -2,7 +2,7 @@ package auth
 
 import (
 	custom_log "restful-api/pkg/logs"
-	"restful-api/pkg/utls"
+	"restful-api/pkg/utils"
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"

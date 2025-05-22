@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	types "api-mini-shop/pkg/model"
-	postgres "api-mini-shop/pkg/postgres"
-	"api-mini-shop/pkg/utils"
+	types "restful-api/pkg/model"
+	postgres "restful-api/pkg/postgres"
+	"restful-api/pkg/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"

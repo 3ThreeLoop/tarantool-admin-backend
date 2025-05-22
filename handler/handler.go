@@ -2,8 +2,8 @@ package handler
 
 import (
 	"restful-api/internal/front/auth"
+	"restful-api/internal/front/user"
 	"restful-api/pkg/middlewares"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"

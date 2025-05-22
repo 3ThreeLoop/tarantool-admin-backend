@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"restful-api/pkg/utls"
+	"restful-api/pkg/utils"
 	"log"
 	"os"
 

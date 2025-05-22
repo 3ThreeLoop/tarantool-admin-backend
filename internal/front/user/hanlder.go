@@ -1,14 +1,14 @@
 package user
 
 import (
-	"api-mini-shop/pkg/constants"
-	custom_log "api-mini-shop/pkg/logs"
-	types "api-mini-shop/pkg/model"
-	utils "api-mini-shop/pkg/utils"
+	"restful-api/pkg/constants"
+	custom_log "restful-api/pkg/logs"
+	types "restful-api/pkg/model"
+	utils "restful-api/pkg/utils"
 	"fmt"
 	"net/http"
 
-	response "api-mini-shop/pkg/http/response"
+	response "restful-api/pkg/http/response"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"

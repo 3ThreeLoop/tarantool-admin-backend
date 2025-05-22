@@ -9,11 +9,11 @@ import (
 	"strings"
 	"time"
 
-	custom_log "api-mini-shop/pkg/logs"
-	types "api-mini-shop/pkg/model"
-	postgres "api-mini-shop/pkg/postgres"
-	"api-mini-shop/pkg/responses"
-	utils "api-mini-shop/pkg/utils"
+	custom_log "restful-api/pkg/logs"
+	types "restful-api/pkg/model"
+	postgres "restful-api/pkg/postgres"
+	"restful-api/pkg/responses"
+	utils "restful-api/pkg/utils"
 
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"

@@ -1,8 +1,8 @@
 package user
 
 import (
-	types "api-mini-shop/pkg/model"
-	"api-mini-shop/pkg/responses"
+	types "restful-api/pkg/model"
+	"restful-api/pkg/responses"
 	"fmt"
 
 	"github.com/google/uuid"

@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	custom_log "api-mini-shop/pkg/logs"
-	postgres "api-mini-shop/pkg/postgres"
+	custom_log "restful-api/pkg/logs"
+	postgres "restful-api/pkg/postgres"
 
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"

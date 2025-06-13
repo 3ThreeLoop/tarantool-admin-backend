@@ -2,7 +2,7 @@ package swagger
 
 import (
 	"fmt"
-	"restful-api/docs" 
+	"tarantool-admin-api/docs" 
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/swagger"

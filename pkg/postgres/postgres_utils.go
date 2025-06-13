@@ -1,10 +1,10 @@
-package sqlx
+package postgres
 
 import (
-	types "restful-api/pkg/model"
 	"fmt"
 	"os"
 	"strings"
+	types "tarantool-admin-api/pkg/model"
 	"time"
 
 	"github.com/google/uuid"
@@ -230,33 +230,39 @@ func SetSeqNextVal(seq_name string, db *sqlx.Tx) (*int, error) {
 }
 
 // IsExists checks if a record exists with the given field value
-func IsExists(space_name string, field_name string, value interface{}, db *sqlx.Tx) (bool, error) {
+func IsExists(spaceName, fieldName string, value interface{}, conn interface{}) (bool, error) {
 	var exists bool
 
-	// Define the SQL query
-	sql := fmt.Sprintf(`SELECT EXISTS(SELECT 1 FROM %s WHERE %s=$1 AND deleted_at IS NULL)`, space_name, field_name)
+	query := fmt.Sprintf(`SELECT EXISTS(SELECT 1 FROM %s WHERE %s = $1 AND deleted_at IS NULL)`, spaceName, fieldName)
 
-	// Execute the query
-	err := db.Get(&exists, sql, value)
-	if err != nil {
-		return false, err
+	switch db := conn.(type) {
+	case *sqlx.DB:
+		err := db.Get(&exists, query, value)
+		return exists, err
+	case *sqlx.Tx:
+		err := db.Get(&exists, query, value)
+		return exists, err
+	default:
+		return false, fmt.Errorf("unsupported DB type: %T", conn)
 	}
-
-	return exists, nil
 }
 
 // IsExistsWhere checks if a record exists with custom WHERE conditions
-func IsExistsWhere(space_name string, where_sqlstr string, args []interface{}, db *sqlx.Tx) (bool, error) {
+func IsExistsWhere(tbl_name string, where_sqlstr string, args []interface{}, conn interface{}) (bool, error) {
 	var exists bool
 
 	// Define the SQL query
-	sql := fmt.Sprintf(`SELECT EXISTS(SELECT 1 FROM %s WHERE %s AND deleted_at IS NULL)`, space_name, where_sqlstr)
+	sql := fmt.Sprintf(`SELECT EXISTS(SELECT 1 FROM %s WHERE %s AND deleted_at IS NULL)`, tbl_name, where_sqlstr)
 
 	// Execute the query
-	err := db.Get(&exists, sql, args...)
-	if err != nil {
-		return false, err
+	switch db := conn.(type) {
+	case *sqlx.DB:
+		err := db.Get(&exists, sql, args)
+		return exists, err
+	case *sqlx.Tx:
+		err := db.Get(&exists, sql, args)
+		return exists, err
+	default:
+		return false, fmt.Errorf("unsupported DB type: %T", conn)
 	}
-
-	return exists, nil
 }

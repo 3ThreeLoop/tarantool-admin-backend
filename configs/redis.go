@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"restful-api/pkg/utils"
+	"tarantool-admin-api/pkg/utils"
 	"log"
 	"os"
 

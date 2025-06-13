@@ -1,13 +1,13 @@
 package main
 
 import (
-	"restful-api/configs"
-	"restful-api/db/postgresql"
-	"restful-api/handler"
-	"restful-api/pkg/logs"
-	"restful-api/pkg/redis"
-	"restful-api/pkg/swagger"
-	"restful-api/router"
+	"tarantool-admin-api/configs"
+	"tarantool-admin-api/db/postgresql"
+	"tarantool-admin-api/handler"
+	"tarantool-admin-api/pkg/logs"
+	"tarantool-admin-api/pkg/redis"
+	"tarantool-admin-api/pkg/swagger"
+	"tarantool-admin-api/router"
 	"fmt"
 )
 

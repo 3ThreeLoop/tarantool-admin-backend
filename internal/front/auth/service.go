@@ -1,13 +1,14 @@
 package auth
 
 import (
-	"restful-api/pkg/responses"
+	"tarantool-admin-api/pkg/responses"
 
 	"github.com/jmoiron/sqlx"
 )
 
 type AuthServiceCreator interface {
 	Login(username string, password string) (*LoginResponse, *responses.ErrorResponse)
+	Register(register_req RegisterRequest) (*RegisterResponse, *responses.ErrorResponse)
 }
 
 type AuthService struct {
@@ -24,4 +25,8 @@ func NewAuthService(db_pool *sqlx.DB) *AuthService {
 
 func (au *AuthService) Login(username string, password string) (*LoginResponse, *responses.ErrorResponse) {
 	return au.AuthRepo.Login(username, password)
+}
+
+func (au *AuthService) Register(register_req RegisterRequest) (*RegisterResponse, *responses.ErrorResponse) {
+	return au.AuthRepo.Register(register_req)
 }

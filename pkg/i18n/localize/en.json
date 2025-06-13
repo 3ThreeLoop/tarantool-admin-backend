@@ -30,5 +30,23 @@
     "login_session_invalid": "Login session is invalid.",
     "role_id_missing": "role id is invalid.",
     "user_show_failed": "Failed to fetch user information.",
-    "user_update_success": "User information updated successfully."
+    "user_update_success": "User information updated successfully.",
+    "register_failed": "Registration failed",
+    "register_success": "Registration successful",
+    "technical_error": "A technical error has occurred",
+    "cannot_insert_db_error": "Cannot insert data into the database",
+    "username_already_exists": "Username already exists",
+
+    "add_db_failed": "Failed to add database",
+    "add_db_success": "Database added successfully",
+    "invalid_connection_settings": "Invalid connection settings",
+    "invalid_info_to_add_db": "Invalid information to add database",
+    "error_add_db": "An error occurred while adding the database",
+    "query_db_failed": "Failed to query database",
+    "query_db_success": "Database queried successfully",
+    "failed_connect_to_target_db": "Failed to connect to the target database",
+    "failed_to_query_db": "An error occurred while querying the database",
+    "db_show_failed": "Failed to show database",
+    "no_db_found": "No database found",
+    "get_db_error": "Error occurred while retrieving the database"
 }

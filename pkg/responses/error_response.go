@@ -23,3 +23,17 @@ func (e *ErrorResponse) NewErrorResponse(messageId string, err error) *ErrorResp
 		Err:       err,
 	}
 }
+
+type ErrorWithDetailResponse struct {
+	MessageID string
+	Err       error
+	Detail    error
+}
+
+func (e *ErrorWithDetailResponse) NewErrorResponse(messageId string, err error, detail error) *ErrorWithDetailResponse {
+	return &ErrorWithDetailResponse{
+		MessageID: messageId,
+		Err:       err,
+		Detail:    detail,
+	}
+}

@@ -1,10 +1,10 @@
 package middlewares
 
 import (
-	// "restful-api/internal/front/auth"
-	"restful-api/internal/front/auth"
-	types "restful-api/pkg/model"
-	"restful-api/pkg/utils"
+	// "tarantool-admin-api/internal/front/auth"
+	"tarantool-admin-api/internal/front/auth"
+	types "tarantool-admin-api/pkg/model"
+	"tarantool-admin-api/pkg/utils"
 	"errors"
 	"fmt"
 	"log"
@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	response "restful-api/pkg/http/response"
+	response "tarantool-admin-api/pkg/http/response"
 
 	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
@@ -196,7 +196,6 @@ func handlePlayerContext(c *fiber.Ctx, pclaim jwt.MapClaims, DBPool *sqlx.DB) er
 		UserUuid:     user_info.UserUUID,
 		UserName:     user_info.UserName,
 		LoginSession: login_session,
-		RoleId:       uint64(user_info.RoleID),
 		Exp:          time.Unix(int64(exp), 0),
 		UserAgent:    string(c.Context().UserAgent()),
 		Ip:           string(c.Context().RemoteIP().String()),

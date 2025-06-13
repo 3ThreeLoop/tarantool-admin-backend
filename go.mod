@@ -1,4 +1,4 @@
-module restful-api
+module tarantool-admin-api
 
 go 1.24.1
 
@@ -22,6 +22,16 @@ require (
 	github.com/swaggo/swag v1.16.4
 	github.com/tarantool/go-tarantool/v2 v2.3.2
 	golang.org/x/text v0.25.0
+)
+
+require (
+	github.com/golang/protobuf v1.3.1 // indirect
+	github.com/mattn/go-pointer v0.0.1 // indirect
+	github.com/spacemonkeygo/spacelog v0.0.0-20180420211403-2296661a0572 // indirect
+	github.com/tarantool/go-iproto v1.1.0 // indirect
+	github.com/tarantool/go-openssl v0.0.8-0.20230307065445-720eeb389195 // indirect
+	google.golang.org/appengine v1.6.7 // indirect
+	gopkg.in/vmihailenco/msgpack.v2 v2.9.2 // indirect
 )
 
 require (
@@ -50,6 +60,7 @@ require (
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/savsgio/gotils v0.0.0-20240303185622-093b76447511 // indirect
 	github.com/swaggo/files/v2 v2.0.2 // indirect
+	github.com/tarantool/go-tarantool v1.12.2
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.52.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect

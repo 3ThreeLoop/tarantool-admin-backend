@@ -23,5 +23,7 @@ func (au *AuthRoute) RegisterAuthRoute() *AuthRoute {
 	auth := au.App.Group("/api/v1/front/auth")
 
 	auth.Post("/login", au.AuthHandler.Login)
+	auth.Post("/register", au.AuthHandler.Register)
+
 	return au
 }

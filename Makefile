@@ -35,3 +35,7 @@ force:
 create:
 	@read -p "Migration name: " name; \
 	goose create $$name sql -dir $(MIGRATIONS_DIR)
+# Drop all table
+reset:
+	goose -dir $(MIGRATIONS_DIR) postgres "$(DATABASE_URL)" reset
+

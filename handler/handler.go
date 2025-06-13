@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"restful-api/internal/front/auth"
-	"restful-api/internal/front/user"
-	"restful-api/pkg/middlewares"
+	"tarantool-admin-api/internal/front/auth"
+	"tarantool-admin-api/internal/front/database"
+	"tarantool-admin-api/pkg/middlewares"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
@@ -16,8 +16,8 @@ type ServiceHandler struct {
 
 // register modules route here
 type FrontService struct {
-	AuthRoute *auth.AuthRoute
-	UserRoute *user.UserRoute
+	AuthRoute     *auth.AuthRoute
+	DatabaseRoute *database.DatabaseRoute
 }
 
 func NewFrontService(app *fiber.App, pool *sqlx.DB) *FrontService {
@@ -27,16 +27,12 @@ func NewFrontService(app *fiber.App, pool *sqlx.DB) *FrontService {
 	// middleware
 	middlewares.NewJwtMinddleWare(app, pool)
 
-	user := user.NewUserRoute(app, pool).RegisterUserRoute()
-
-	// app.Get("/hello", func(c *fiber.Ctx) error {
-	// 	fmt.Println("hello")
-	// 	return nil
-	// })
+	// register database route
+	db := database.NewRoute(pool, app).RegisterAuthRoute()
 
 	return &FrontService{
-		AuthRoute: au,
-		UserRoute: user,
+		AuthRoute:     au,
+		DatabaseRoute: db,
 	}
 }
 

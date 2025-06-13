@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	custom_log "restful-api/pkg/logs"
-	postgres "restful-api/pkg/postgres"
+	custom_log "tarantool-admin-api/pkg/logs"
+	postgres "tarantool-admin-api/pkg/postgres"
 
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"

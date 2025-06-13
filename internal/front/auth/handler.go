@@ -1,10 +1,10 @@
 package auth
 
 import (
-	response "restful-api/pkg/http/response"
-	"restful-api/pkg/utils"
 	"fmt"
 	"net/http"
+	response "tarantool-admin-api/pkg/http/response"
+	"tarantool-admin-api/pkg/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
@@ -62,6 +62,40 @@ func (au *AuthHandler) Login(c *fiber.Ctx) error {
 			utils.Translate("login_success", nil, c),
 			1000,
 			resp,
+		),
+	)
+}
+
+func (au *AuthHandler) Register(c *fiber.Ctx) error {
+	var register_req RegisterRequest
+	v := utils.NewValidator()
+
+	if err := register_req.Bind(c, v); err != nil {
+		return c.Status(http.StatusBadRequest).JSON(
+			response.NewResponseError(
+				utils.Translate("register_failed", nil, c),
+				-1001,
+				err,
+			),
+		)
+	}
+
+	register_resp, err := au.AuthService.Register(register_req)
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON(
+			response.NewResponseError(
+				utils.Translate(err.MessageID, nil, c),
+				-1001,
+				fmt.Errorf(utils.Translate(err.Err.Error(), nil, c)),
+			),
+		)
+	}
+
+	return c.Status(http.StatusBadRequest).JSON(
+		response.NewResponse(
+			utils.Translate("register_success", nil, c),
+			1001,
+			register_resp,
 		),
 	)
 }

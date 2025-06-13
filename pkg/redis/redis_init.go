@@ -1,7 +1,7 @@
 package redis
 
 import (
-	"restful-api/configs"
+	"tarantool-admin-api/configs"
 	"context"
 	"fmt"
 	"log"

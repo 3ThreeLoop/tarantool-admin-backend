@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 	"os"
-	custom_log "restful-api/pkg/logs"
-	"restful-api/pkg/responses"
-	"restful-api/pkg/utils"
+	custom_log "tarantool-admin-api/pkg/logs"
+	"tarantool-admin-api/pkg/responses"
+	"tarantool-admin-api/pkg/utils"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -17,6 +17,7 @@ import (
 
 type AuthRepo interface {
 	Login(username string, password string) (*LoginResponse, *responses.ErrorResponse)
+	Register(register_req RegisterRequest) (*RegisterResponse, *responses.ErrorResponse)
 }
 
 type AuthRepoImpl struct {
@@ -114,7 +115,7 @@ func (au *AuthRepoImpl) GetUserByUUID(user_uuid string) (*UserInfo, error) {
 	sql := `
 		SELECT
 			id, user_uuid, user_name,
-			role_id, login_session, status_id
+			login_session, status_id
 		FROM tbl_users
 		WHERE deleted_at IS NULL 
 		AND user_uuid = $1
@@ -127,4 +128,40 @@ func (au *AuthRepoImpl) GetUserByUUID(user_uuid string) (*UserInfo, error) {
 	}
 
 	return &user_info, nil
+}
+
+func (au *AuthRepoImpl) Register(register_req RegisterRequest) (*RegisterResponse, *responses.ErrorResponse) {
+	var register_model RegisterModel
+
+	// create register model
+	if err := register_model.New(register_req, au.DBPool); err != nil {
+		custom_log.NewCustomLog(err.MessageID, err.Detail.Error(), "error")
+		err_msg := &responses.ErrorResponse{}
+		return nil, err_msg.NewErrorResponse(err.MessageID, err.Err)
+	}
+
+	// prepare query
+	query := `
+		INSERT INTO tbl_users (
+			id, user_uuid, first_name, last_name, user_name,
+			password, email, profile_photo, status_id, "order",
+			created_by, created_at
+		) VALUES (
+			:id, :user_uuid, :first_name, :last_name, :user_name,
+			:password, :email, :profile_photo, :status_id, :order,
+			:created_by, :created_at
+		)
+	`
+
+	// execute request
+	_, err := au.DBPool.NamedExec(query, register_model)
+	if err != nil {
+		custom_log.NewCustomLog("register_failed", err.Error(), "error")
+		err_msg := &responses.ErrorResponse{}
+		return nil, err_msg.NewErrorResponse("register_failed", fmt.Errorf("cannot_insert_db_error"))
+	}
+
+	return &RegisterResponse{
+		UserInfo: register_model,
+	}, nil
 }

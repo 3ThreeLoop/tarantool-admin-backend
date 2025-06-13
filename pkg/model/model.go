@@ -14,7 +14,6 @@ type UserContext struct {
 	UserUuid     string
 	UserName     string
 	LoginSession string
-	RoleId       uint64
 	Exp          time.Time
 	UserAgent    string
 	Ip           string

@@ -65,3 +65,26 @@ func NotFound() Error {
 	e.Errors["body"] = "resource not found"
 	return e
 }
+
+type ErrorWithDetailResponse struct {
+	Success    bool                `json:"success"`
+	Message    string              `json:"message"`
+	StatusCode int                 `json:"status_code"`
+	Data       ErrorWithDetailData `json:"data"`
+}
+type ErrorWithDetailData struct {
+	Error  string `json:"error"`
+	Detail string `json:"detail"`
+}
+
+func NewResponseErrorWithDetail(message string, statusCode int, err error, detail error) ErrorWithDetailResponse {
+	return ErrorWithDetailResponse{
+		Success:    false,
+		Message:    message,
+		StatusCode: statusCode,
+		Data: ErrorWithDetailData{
+			Error:  err.Error(),
+			Detail: detail.Error(),
+		},
+	}
+}

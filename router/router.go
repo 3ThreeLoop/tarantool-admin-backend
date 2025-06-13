@@ -1,7 +1,7 @@
 package router
 
 import (
-	"restful-api/pkg/utils"
+	"tarantool-admin-api/pkg/utils"
 
 	"github.com/gofiber/contrib/fiberi18n/v2"
 	"github.com/gofiber/contrib/websocket"

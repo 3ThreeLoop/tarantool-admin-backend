@@ -3,6 +3,7 @@ package handler
 import (
 	"tarantool-admin-api/internal/front/auth"
 	"tarantool-admin-api/internal/front/database"
+	"tarantool-admin-api/internal/front/user"
 	"tarantool-admin-api/pkg/middlewares"
 
 	"github.com/gofiber/fiber/v2"
@@ -18,6 +19,7 @@ type ServiceHandler struct {
 type FrontService struct {
 	AuthRoute     *auth.AuthRoute
 	DatabaseRoute *database.DatabaseRoute
+	UserRoute     *user.UserRoute
 }
 
 func NewFrontService(app *fiber.App, pool *sqlx.DB) *FrontService {
@@ -28,11 +30,14 @@ func NewFrontService(app *fiber.App, pool *sqlx.DB) *FrontService {
 	middlewares.NewJwtMinddleWare(app, pool)
 
 	// register database route
-	db := database.NewRoute(pool, app).RegisterAuthRoute()
+	db := database.NewRoute(pool, app).RegisterDatabaseRoute()
+	// register user route
+	us := user.NewRoute(pool, app).RegisterUserRoute()
 
 	return &FrontService{
 		AuthRoute:     au,
 		DatabaseRoute: db,
+		UserRoute:     us,
 	}
 }
 

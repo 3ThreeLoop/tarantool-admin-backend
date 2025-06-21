@@ -55,12 +55,13 @@ type UserInfo struct {
 }
 
 type RegisterRequest struct {
-	FirstName    string `json:"first_name" validate:"required,min=2,max=100"`
-	LastName     string `json:"last_name" validate:"required,min=2,max=100"`
-	UserName     string `json:"user_name" validate:"required,min=3,max=50,alphanum"`
-	Password     string `json:"password" validate:"required,min=6,max=100"`
-	Email        string `json:"email" validate:"required,email"`
-	ProfilePhoto string `json:"profile_photo" validate:"omitempty,url"`
+	FirstName       string `json:"first_name" validate:"required,min=2,max=100"`
+	LastName        string `json:"last_name" validate:"required,min=2,max=100"`
+	UserName        string `json:"user_name" validate:"required,min=3,max=50,alphanum"`
+	Password        string `json:"password" validate:"required,min=6,max=100"`
+	ConfirmPassword string `json:"confirm_password" validate:"required,min=6,max=100"`
+	Email           string `json:"email" validate:"required,email"`
+	ProfilePhoto    string `json:"profile_photo" validate:"omitempty"`
 }
 
 func (au *RegisterRequest) Bind(c *fiber.Ctx, v *utils.Validator) error {
@@ -72,6 +73,10 @@ func (au *RegisterRequest) Bind(c *fiber.Ctx, v *utils.Validator) error {
 	if err := v.Validate(au, c); err != nil {
 		custom_log.NewCustomLog("register_failed", err.Error(), "error")
 		return err
+	}
+
+	if au.Password != au.ConfirmPassword {
+		return fmt.Errorf("confirm_pass_and_pass_dont_match")
 	}
 
 	return nil

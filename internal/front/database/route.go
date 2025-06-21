@@ -19,7 +19,7 @@ func NewRoute(db_pool *sqlx.DB, app *fiber.App) *DatabaseRoute {
 	}
 }
 
-func (db *DatabaseRoute) RegisterAuthRoute() *DatabaseRoute {
+func (db *DatabaseRoute) RegisterDatabaseRoute() *DatabaseRoute {
 	database := db.App.Group("/api/v1/front/database")
 
 	database.Post("/", db.DatabaseHandler.Create)

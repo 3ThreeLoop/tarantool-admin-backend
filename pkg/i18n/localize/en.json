@@ -36,6 +36,12 @@
     "technical_error": "A technical error has occurred",
     "cannot_insert_db_error": "Cannot insert data into the database",
     "username_already_exists": "Username already exists",
+    "confirm_pass_and_pass_dont_match": "Confirm password and password do not match",
+    "userinfo_show_failed": "Failed to show user info.",
+    "userinfo_show_success": "User info shown successfully",
+    "no_user_found": "No user found",
+    "get_user_error": "An error occurred while retrieving user information",
+    "error_get_user_database": "An error occurred while retrieving user databases",
 
     "add_db_failed": "Failed to add database",
     "add_db_success": "Database added successfully",

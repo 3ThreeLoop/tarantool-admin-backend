@@ -91,7 +91,7 @@ func (au *AuthHandler) Register(c *fiber.Ctx) error {
 		)
 	}
 
-	return c.Status(http.StatusBadRequest).JSON(
+	return c.Status(http.StatusOK).JSON(
 		response.NewResponse(
 			utils.Translate("register_success", nil, c),
 			1001,

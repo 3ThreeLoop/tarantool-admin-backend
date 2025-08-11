@@ -72,7 +72,7 @@ func (u *UserRepoImpl) getUserDatabases(user_id int) ([]UserDatabase, error) {
 	// prepare query
 	query := `
 		SELECT
-			db_uuid, db_name
+			db_uuid, db_name, host, port
 		FROM tbl_users_databases
 		WHERE deleted_at IS NULL
 		AND user_id = $1

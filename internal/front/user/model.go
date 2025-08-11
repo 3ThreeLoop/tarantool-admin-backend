@@ -26,6 +26,8 @@ type User struct {
 type UserDatabase struct {
 	DBUUID string `db:"db_uuid" json:"db_uuid"`
 	DBName string `db:"db_name" json:"db_name"`
+	Host   string `db:"host" json:"host"`
+	Port   string `db:"port" json:"port"`
 }
 
 type UserInfoResponse struct {

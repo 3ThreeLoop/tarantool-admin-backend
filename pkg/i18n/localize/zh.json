@@ -54,5 +54,7 @@
     "failed_to_query_db": "查询数据库时发生错误",
     "db_show_failed": "显示数据库失败",
     "no_db_found": "未找到数据库",
-    "get_db_error": "检索数据库时发生错误"
+    "get_db_error": "检索数据库时发生错误",
+    "db_detail_show_failed": "无法显示数据库详细信息",
+    "failed_to_get_db_detail": "无法获取数据库详细信息"
 }

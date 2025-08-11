@@ -54,5 +54,7 @@
     "failed_to_query_db": "An error occurred while querying the database",
     "db_show_failed": "Failed to show database",
     "no_db_found": "No database found",
-    "get_db_error": "Error occurred while retrieving the database"
+    "get_db_error": "Error occurred while retrieving the database",
+    "db_detail_show_failed": "Failed to show database details",
+    "failed_to_get_db_detail": "Failed to get database details"
 }
